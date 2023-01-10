@@ -71,11 +71,15 @@ char *translateColumn(int c){
 
 int main(){
     FILE *f;
+    time_t t;
+    struct tm * tInfo;
     //<---------> CONNECTION SECTION <--------->
     if ((sd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
 	{
-        
-		printf("\033[0;32m[SERVER] \033[0;31mWARN   \033[0;37mSocket Error! \n");
+        time(&t);
+        tInfo = localtime(&t);
+		printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;31mWARN   \033[0;37mSocket Error! \n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec);
 		return errno;
 	}
     setsockopt(sd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
@@ -88,14 +92,19 @@ int main(){
 
     if (bind(sd, (struct sockaddr *)&server, sizeof(struct sockaddr)) == -1)
 	{
-		printf("\033[0;32m[SERVER] \033[0;31mWARN   \033[0;37mBind Error! \n");
+        time(&t);
+        tInfo = localtime(&t);
+		printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;31mWARN   \033[0;37mBind Error! \n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec);
 		return errno;
 	}
 
 	if (listen(sd, 1) == -1)
 	{
-      
-		printf("\033[0;32m[SERVER] \033[0;31mWARN   \033[0;37mListen Error! \n");
+        time(&t);
+        tInfo = localtime(&t);
+		printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;31mWARN   \033[0;37mListen Error! \n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec);
 		return errno;
 	}
     int pId;
@@ -103,13 +112,19 @@ int main(){
     while(1){
         int client1,client2;
         int len = sizeof(from);
-		printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mWaiting at port: %d \n",PORT);
+        time(&t);
+        tInfo = localtime(&t);
+		printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mWaiting at port: %d \n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,PORT);
         client1 = accept(sd, (struct sockaddr *)&from, &len);
 		client2 = accept(sd, (struct sockaddr *)&from, &len);
 
         if(client1 < 0 || client2 < 0)
         {
-		    printf("\033[0;32m[SERVER] \033[0;31mWARN   \033[0;37mAccept Error! \n");
+            time(&t);
+            tInfo = localtime(&t);
+		    printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;31mWARN   \033[0;37mAccept Error! \n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec);
             continue;
         }
 
@@ -134,11 +149,20 @@ int main(){
             
             //take nicknames
             read(client1,player1.nickname,32);
-            printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;36m%s \033[0;37mjoin!\n",player1.nickname);
+            time(&t);
+            tInfo = localtime(&t);
+            printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;36m%s \033[0;37mjoin!\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player1.nickname);
             read(client2,player2.nickname,32);
             
-            printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;36m%s \033[0;37mjoin!\n",player2.nickname);
-            printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mCreate lobby with \033[0;36m%s and \033[0;36m%s\033[0;37m...\n",player1.nickname,player2.nickname);
+            time(&t);
+            tInfo = localtime(&t);
+            printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;36m%s \033[0;37mjoin!\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player2.nickname);
+            time(&t);
+            tInfo = localtime(&t);
+            printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mCreate lobby with \033[0;36m%s and \033[0;36m%s\033[0;37m...\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player1.nickname,player2.nickname);
 
             //transfer nicknames
             write(client2,&player1.nickname,32);
@@ -147,24 +171,39 @@ int main(){
             //first - white, second - black
             player1.color = 0;
             player2.color = 1;
-		    printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mis %s!\n",player1.nickname,whichColor(player1.color));
-		    printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mis %s!\n",player2.nickname,whichColor(player2.color));
+            time(&t);
+            tInfo = localtime(&t);
+		    printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mis %s!\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player1.nickname,whichColor(player1.color));
+    time(&t);
+            tInfo = localtime(&t);
+		    printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mis %s!\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player2.nickname,whichColor(player2.color));
 
             write(client1,&player1.color,sizeof(int));
             write(client2,&player2.color,sizeof(int));
 
             //game random
             int selectGame = randGame();
-            if(selectGame == 1)
-                printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayers: \033[0;36m%s \033[0;37mand \033[0;36m%s \033[0;37mplay International checkers !\n",player1.nickname,player2.nickname);
-            else
-                printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayers: \033[0;36m%s \033[0;37mand \033[0;36m%s \033[0;37mplay Canadian checkers !\n",player1.nickname,player2.nickname);
+            if(selectGame == 1){
+                time(&t);
+                tInfo = localtime(&t);
+                printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayers: \033[0;36m%s \033[0;37mand \033[0;36m%s \033[0;37mplay International checkers !\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player1.nickname,player2.nickname);}
+            else{
+                time(&t);
+                tInfo = localtime(&t);
+                printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayers: \033[0;36m%s \033[0;37mand \033[0;36m%s \033[0;37mplay Canadian checkers !\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player1.nickname,player2.nickname);}
             write(client1,&selectGame,sizeof(int));
             write(client2,&selectGame,sizeof(int));
             
             //send size of board at clients
             size = selectSizeBoard(selectGame);
-            printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayers: \033[0;36m%s \033[0;37mand \033[0;36m%s \033[0;37mplay %d x %d table !\n",player1.nickname,player2.nickname,size,size);
+            time(&t);
+            tInfo = localtime(&t);
+            printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayers: \033[0;36m%s \033[0;37mand \033[0;36m%s \033[0;37mplay %d x %d table !\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player1.nickname,player2.nickname,size,size);
             write(client1,&size,sizeof(int));
             write(client2,&size,sizeof(int));
 
@@ -189,8 +228,12 @@ int main(){
                 int responseFromServer;         
                 int colorRound;
                 
-                if(player1.move) printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mround!\n",player1.nickname);
-                else printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mround!\n",player2.nickname);
+                if(player1.move){time(&t);
+            tInfo = localtime(&t); printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mround!\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player1.nickname);}
+                else{time(&t);
+            tInfo = localtime(&t); printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mround!\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player2.nickname);}
                 write(client1,&player1.move,sizeof(int));
                 write(client2,&player2.move,sizeof(int));
 
@@ -201,31 +244,46 @@ int main(){
                         read(client1, &l, sizeof(int));
                         read(client1, &cFinal, sizeof(int));
                         read(client1, &lFinal, sizeof(int));
-                        printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mchoose : %c%d -> %c%d !\n",player1.nickname,translateColumn(c),l ,translateColumn(cFinal),lFinal);
+                        time(&t);
+                        tInfo = localtime(&t);
+                        printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mchoose : %c%d -> %c%d !\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player1.nickname,translateColumn(c),l ,translateColumn(cFinal),lFinal);
                     }
                     else{
                         read(client2, &c, sizeof(int));
                         read(client2, &l, sizeof(int));
                         read(client2, &cFinal, sizeof(int));
                         read(client2, &lFinal, sizeof(int));
-                        printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mchoose : [%c%d] -> [%c%d] !\n",player2.nickname,translateColumn(c),l ,translateColumn(cFinal),lFinal);
+                        time(&t);
+                        tInfo = localtime(&t);
+                        printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mchoose : [%c%d] -> [%c%d] !\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player2.nickname,translateColumn(c),l ,translateColumn(cFinal),lFinal);
                     }
                     c-=1;
                     l-=1;
                     cFinal-=1;
                     lFinal-=1;
-                    printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPositions : [%d,%d] -> [%d,%d] !\n",c,l,cFinal,lFinal);
+                    time(&t);
+                    tInfo = localtime(&t);
+                    printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPositions : [%d,%d] -> [%d,%d] !\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,c,l,cFinal,lFinal);
 
                     if(player1.move) colorRound = 0;
                     else colorRound = 1; 
                     responseFromServer = goodPositions(board,size,c,l,cFinal,lFinal,colorRound,size); //its ok?
-                    if(!responseFromServer)
-		                printf("\033[0;32m[SERVER] \033[0;31mWARN   \033[0;37mInvalid Positions!\n");
+                    if(!responseFromServer){
+                        time(&t);
+                        tInfo = localtime(&t);
+		                printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;31mWARN   \033[0;37mInvalid Positions!\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec);}
                     if(player1.move) write(client1,&responseFromServer,sizeof(int));
                     else write(client2,&responseFromServer,sizeof(int));
 
-                    if(responseFromServer)
-                        printf("\033[0;32m[SERVER]  \033[0;34mINFO  \033[0;37mGood Positions!\n");
+                    if(responseFromServer){
+                        time(&t);
+                        tInfo = localtime(&t);
+                        printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER]  \033[0;34mINFO  \033[0;37mGood Positions!\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec);}
                     manyPos++;
                     if(manyPos == 3 && responseFromServer == 0){
                         if(player1.move) player2.winner = 1;
@@ -233,20 +291,34 @@ int main(){
                         responseFromServer = 1;
                     }
                 }while(responseFromServer == 0);
-                printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mScore: %d - %d !\n",player1.score,player2.score);   
+                time(&t);
+                tInfo = localtime(&t);
+                printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mScore: %d - %d !\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player1.score,player2.score);   
                 if(manyPos != 3)
-                if(player1.move)
-                    printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mmoved: [%c,%d] -> [%c,%d] !\n",player1.nickname,translateColumn(c+1),l,translateColumn(cFinal+1),lFinal);    
-                else
-                    printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mmoved: [%c,%d] -> [%c,%d] !\n",player2.nickname,translateColumn(c+1),l,translateColumn(cFinal+1),lFinal);
+                if(player1.move){
+                    time(&t);
+                    tInfo = localtime(&t);
+                    printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mmoved: [%c,%d] -> [%c,%d] !\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player1.nickname,translateColumn(c+1),l,translateColumn(cFinal+1),lFinal);}
+                else{
+                    time(&t);
+                    tInfo = localtime(&t);
+                    printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mmoved: [%c,%d] -> [%c,%d] !\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player2.nickname,translateColumn(c+1),l,translateColumn(cFinal+1),lFinal);}
 
                 //update
-                printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mBoard Updated!!!\n");
+                time(&t);
+                tInfo = localtime(&t);
+                printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mBoard Updated!!!\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec);
                 int scoreRound = updatePieces(c,l,cFinal,lFinal,colorRound,size,board);
                 if(player1.move) player1.score+=scoreRound;
                 else player2.score+=scoreRound;
-                
-                printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mScore: %d - %d !\n",player1.score,player2.score);
+                time(&t);
+                tInfo = localtime(&t);
+                printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mScore: %d - %d !\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player1.score,player2.score);
 
                 for(int i = 0; i < size; ++i)
                     for(int j = 0; j < size; ++j){
@@ -276,12 +348,24 @@ int main(){
             write(client1,&player1.winner,sizeof(int));
             write(client2,&player2.winner,sizeof(int));
             if(player1.winner){
-                printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mwin!\n",player1.nickname);
-                printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mlose!\n",player2.nickname);
+                time(&t);
+                tInfo = localtime(&t);
+                printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mwin!\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player1.nickname);
+                time(&t);
+                tInfo = localtime(&t);
+                printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mlose!\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player2.nickname);
             }
             else{
-                printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mwin!\n",player2.nickname);
-                printf("\033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mlose!\n",player1.nickname);
+                time(&t);
+                tInfo = localtime(&t);
+                printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mwin!\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player2.nickname);
+                time(&t);
+                tInfo = localtime(&t);
+                printf("\033[0;33m%02d:%02d:%02d \033[0;32m[SERVER] \033[0;34mINFO   \033[0;37mPlayer \033[0;36m%s \033[0;37mlose!\n",tInfo->tm_hour, tInfo->tm_min, 
+    tInfo->tm_sec,player1.nickname);
             }
             f=fopen("/home/ionel/Desktop/DraughtsS/scores.txt","a");
             fprintf(f,"%s vs %s ",player1.nickname,player2.nickname);

@@ -16,8 +16,8 @@
 int board[13][13];
 extern int ernno;
 int port;
-struct sockaddr_in server; //connect to server
-int sd; //socket descriptor
+struct sockaddr_in server;
+int sd;
 char namePlayer[32];
 int sizeBoard;
 

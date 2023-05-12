@@ -20,7 +20,7 @@ Run server
 ./server
 ```
 
-Run a number of clients
+Run client
 ```bash
 ./client 127.0.0.1 2023
 ```
